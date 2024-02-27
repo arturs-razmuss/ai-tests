@@ -18,8 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ExchangeService {
 
-    //moneta provides multiple remote data sources and local caching on file system satisfying resiliency requirements
-    //alternative would be to implement our own providers with retries, circuit breaking logic with fallback to cache
     private final ExchangeRateProvider provider;
 
     public Optional<ExchangeRate> getExchangeRate(@NonNull CurrencyUnit sourceCurrency, @NonNull CurrencyUnit targetCurrency) {
