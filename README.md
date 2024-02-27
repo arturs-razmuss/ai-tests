@@ -46,7 +46,7 @@ In addition, each generated test is previewed and can be further tweaked by addi
 ![CodiumAI settings with predefined "Plain" custom prompts](screenshots/CodiumAI/testPreview.png)
 
 To evaluate CodiumAI I used multiple strategies:
-#### Let CodiumAI generate tests without no custom instructions
+#### 1. Let CodiumAI generate tests without no custom instructions
 [ExchangeServiceCodiumPlainTest](src/test/java/com/arpc/aitests/ExchangeServiceCodiumPlainTest.java)
 
 After clicking "Save to file" button for the 8 test in preview, CodiumAI generated a file without package name and static imports missing. 
@@ -55,8 +55,9 @@ initialized with invalid currency `Monetary.getCurrency("NONEXISTENT");` as the 
 
 Each test had a comment with the behavior description, it must assist the tool with maintenance of tests in the future. Since this information is partially duplicated in method name, I am sure developers wouldn't want to write it by hand. I wouldn't.
 
-#### Let CodiumAI generate tests with custom prompt I used for GitHub Copilot
+#### 2. Let CodiumAI generate tests with custom prompt I used for GitHub Copilot
 [ExchangeServiceCodiumPromtTest](src/test/java/com/arpc/aitests/ExchangeServiceCodiumPromtTest.java)
+
 The initial result was decent, but the repeating setup code in each test was a bit verbose and meant it's not easy enough to add new test cases, since you would need to repeat all the setup code. 
 
 In addition, the test output didn't match my go-to style for unit tests, so I decided to try custom prompt in "General Instructions" to see if I can get better results.
@@ -67,7 +68,7 @@ The code it created followed the instructions, but lacked fields intended for re
 It was easy enough to fix the test by hand or ask CodiumAI Chat to fix it for me:
 ![CodiumAI chat](screenshots/CodiumAI/fixingImports.png)
 
-#### Let CodiumAI add additional test cases for handwritten test file with just 2 scenarios
+#### 3. Let CodiumAI add additional test cases for handwritten test file with just 2 scenarios
 [ExchangeServiceTest](src/test/java/com/arpc/aitests/ExchangeServiceTest.java)
 
 By far the best outcome was achieved when I wrote 2 tests by hand and then asked CodiumAI to add additional tests.
