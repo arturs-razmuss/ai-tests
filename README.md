@@ -117,11 +117,20 @@ the overall attempt was solid.
 
 ## Conclusion
 
+None of the tools tested were perfect and could be operated without human intervention. 
 
+This aligns with the reports were Human+AI combinations outperform AI or Human alone.
+* [Is AI Actually Useful? by Patrick Boyle](https://www.youtube.com/watch?v=FTs35x-xUg4)
+* [Go player beating AI](https://arstechnica.com/information-technology/2023/02/man-beats-machine-at-go-in-human-victory-over-ai/)
 
-[Go player beating AI](https://arstechnica.com/information-technology/2023/02/man-beats-machine-at-go-in-human-victory-over-ai/)
+I know a lot of developers with unhealthy views on testing, and I am certain approaches I just demonstrated will grow in popularity.
+The allure to just click "next" and not to think along the way is there. 
 
-[Is AI Actually Useful? by Patrick Boyle](https://www.youtube.com/watch?v=FTs35x-xUg4)
+Consider Tesla Autopilot or any other driving assistants which follow cars in safe distance and keep you in lane.
+The more you use it, the more you trust it.
+
+Hopefully, this reliance is managed and doesn't lead to an accident 🦽.
+
 
 ## TLDR
 Best results were achieved when writing a few tests by hand and then asking CodiumAI [to add additional tests](https://github.com/arturs-razmuss/ai-tests/blob/master/src/test/java/com/arpc/aitests/ExchangeServiceTest.java#L63-L122)
