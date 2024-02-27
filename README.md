@@ -14,17 +14,17 @@ The goal of the exercise was to create unit tests for [ExchangeService.java](src
 performs type conversion and delegates to another service while handling some error scenarios through Optional.
 
 ## Intro
-Tests are essential for any application. 
+Tests are essential for any application.
 
 If done right:
 - they provide a safety net for refactoring
 - document the expected behavior of the code
-- ensure application behaves as expected through dependency upgrade cycles 
+- ensure the application behaves as expected through dependency upgrade cycles
 
-However, writing tests can be time-consuming and error-prone. 
+However, writing tests can be time-consuming and error-prone.
 
-In many cases I write tests in advance of the code under test, nevertheless there are scenarios where 
-I wish there is a faster and better way. 
+In many cases I write tests in advance of the code under test, nevertheless, there are scenarios where
+I wish there were a faster and better way.
 
 AI test generation tools aim to automate this process by generating tests based on the code and the expected behavior.
 
@@ -32,14 +32,14 @@ Does it mean you just gained 30-40% of your development time back? Let's find ou
 
 ## Deep dive
 ### CodiumAI
-CodiumAI has a free version for VS Code and JetBrains products. 
-Not only it generates tests, but provides code explanation, code improvement suggestions and a chat feature. [[ref]](https://www.codium.ai/products/ide-plugin/)
+CodiumAI has a free version for VS Code and JetBrains products.
+Not only does it generate tests, but provides code explanation, code improvement suggestions, and a chat feature. [[ref]](https://www.codium.ai/products/ide-plugin/)
 
-Here is how it's main panel looks in action using predefined prompt:
+Here is how its main panel looks in action using a predefined prompt:
 ![CodiumAI settings with predefined "Plain" custom prompts](screenshots/CodiumAI/defaultSettings.png)
 
 The main strength of CodiumAI is its approach to first generate Behaviours Coverage (test plan) in natural language and then convert them to tests.
-I like this approach since it hints to the developer the value of test design and allows for early intervention with out the burden of implementation details.
+I like this approach since it hints to the developer about the value of test design and allows for early intervention without the burden of implementation details.
 ![CodiumAI settings with predefined "Plain" custom prompts](screenshots/CodiumAI/behaviours.png)
 
 In addition, each generated test is previewed and can be further tweaked by additional prompts.
@@ -49,21 +49,21 @@ To evaluate CodiumAI I used multiple strategies:
 #### 1. Let CodiumAI generate tests without no custom instructions
 [ExchangeServiceCodiumPlainTest](src/test/java/com/arpc/aitests/ExchangeServiceCodiumPlainTest.java)
 
-After clicking "Save to file" button for the 8 test in preview, CodiumAI generated a file without package name and static imports missing. 
+After clicking the "Save to file" button for the 8 tests in the preview, CodiumAI generated a file without a package name and static imports missing.
 With minimal changes I got most tests working and some I had to disable since the CurrencyUnit type couldn't be
 initialized with invalid currency `Monetary.getCurrency("NONEXISTENT");` as the test intended.
 
-Each test had a comment with the behavior description, it must assist the tool with maintenance of tests in the future. Since this information is partially duplicated in method name, I am sure developers wouldn't want to write it by hand. I wouldn't.
+Each test had a comment with the behavior description, it must assist the tool with maintenance of tests in the future. Since this information is partially duplicated in the method name, I am sure developers wouldn't want to write it by hand. I wouldn't.
 
-#### 2. Let CodiumAI generate tests with custom prompt I used for GitHub Copilot
+#### 2. Let CodiumAI generate tests with the custom prompt I used for GitHub Copilot
 [ExchangeServiceCodiumPromtTest](src/test/java/com/arpc/aitests/ExchangeServiceCodiumPromtTest.java)
 
-The initial result was decent, but the repeating setup code in each test was a bit verbose and meant it's not easy enough to add new test cases, since you would need to repeat all the setup code. 
+The initial result was decent, but the repeating setup code in each test was a bit verbose and meant it was not easy enough to add new test cases, since you would need to repeat all the setup code.
 
-In addition, the test output didn't match my go-to style for unit tests, so I decided to try custom prompt in "General Instructions" to see if I can get better results.
+In addition, the test output didn't match my go-to style for unit tests, so I decided to try a custom prompt in "General Instructions" to see if I could get better results.
 The prompt is available in the Github Copilot [section](#Github Copilot).
 
-The code it created followed the instructions, but lacked fields intended for reuse and `@BeforeEach` method which the tests relied on. 
+The code it created followed the instructions but lacked fields intended for reuse and `@BeforeEach` method which the tests relied on.
 
 It was easy enough to fix the test by hand or ask CodiumAI Chat to fix it for me:
 ![CodiumAI chat](screenshots/CodiumAI/fixingImports.png)
@@ -72,28 +72,28 @@ It was easy enough to fix the test by hand or ask CodiumAI Chat to fix it for me
 [ExchangeServiceTest](src/test/java/com/arpc/aitests/ExchangeServiceTest.java)
 
 By far the best outcome was achieved when I wrote 2 tests by hand and then asked CodiumAI to add additional tests.
-They reused the helper class I had created and followed the same style of tests 🎉. 
+They reused the helper class I had created and followed the same style of tests .
 
 
 ### Diffblue
 Diffblue is a commercial product that also offers a free community plugin.
-It's main feature seems to be generating tests for a whole project. However, this feature is only available in
-commercial version and my today's experiment focuses on a single class.
+Its main feature is generating tests for a whole project. However, this feature is only available in
+the commercial version and today's experiment focuses on a single class.
 
 It's easy to use!
 
-After installing the plugin you can quickly generate tests by just one click.
+After installing the plugin you can quickly generate tests with just one click.
 ![CodiumAI chat](screenshots/diffblue/testsForPackage.png)
 
-Few moments later
+A few moments later
 ![CodiumAI chat](screenshots/diffblue/generationOutput.png)
-A new file [ExchangeServiceDiffblueTest](src/test/java/com/arpc/aitests/ExchangeServiceDiffblueTest.java) was generatated and what surprised me the most it compiled and passed all the tests it had written. Regarding the test quality please see for yourself, I think there is plenty to be desired.
+A new file [ExchangeServiceDiffblueTest](src/test/java/com/arpc/aitests/ExchangeServiceDiffblueTest.java) was generated and what surprised me the most it compiled and passed all the tests it had written. Regarding the test quality please see for yourself, I think plenty is to be desired.
 
 ### Github Copilot
 Most of the developers I know are using some Generative AI chat in their work. So I decided to add GitHub Copilot to the mix.
 
-Aside. I have seen some companies trying to boost their value offering by including a library of prompts. 
-Here is one prompt, completely for free... you are welcome 🤭 
+Aside. I have seen some companies trying to boost their value offering by including a library of prompts.
+Here is one prompt, completely for free... you are welcome
 
 This is the prompt I used for Copilot to generate tests. Since it can add context automatically I didn't have to add ExchangeService.java code explicitly.
 ```
@@ -121,7 +121,7 @@ The generated code used fields and setUp method to make tests succinct and easy 
 [Is AI Actually Useful? by Patrick Boyle](https://www.youtube.com/watch?v=FTs35x-xUg4)
 
 ## TLDR
-Best results were achieved when writing few tests by hand and then asking CodiumAI [to add additional tests](https://github.com/arturs-razmuss/ai-tests/blob/master/src/test/java/com/arpc/aitests/ExchangeServiceTest.java#L63-L122)
+Best results were achieved when writing a few tests by hand and then asking CodiumAI [to add additional tests](https://github.com/arturs-razmuss/ai-tests/blob/master/src/test/java/com/arpc/aitests/ExchangeServiceTest.java#L63-L122)
 
 You can probably achieve similar results with multiples of engineered prompts in Copilot, but it's not as convenient as with CodiumAI.
 
@@ -140,5 +140,3 @@ Legend:
 | Supports custom prompts                                    | 🟢 Yes   |                                                                                                                                                                                                        | 🔴 no    |                                                                                                                                                                                          | 🟢 Yes  |                                                                                                                                |
 | Descriptive test name                                      | 🟢 Yes   |                                                                                                                                                                                                        | 🔴 no    | [test names or comments don't provide meaning](https://github.com/arturs-razmuss/ai-tests/blob/master/src/test/java/com/arpc/aitests/ExchangeServiceDiffblueTest.java) | 🟢 Yes  |                                                                                                                                |
 | Used fields and constants to reduce repetition inside test | 🟠 no    | [attempted when promted](https://github.com/arturs-razmuss/ai-tests/commit/c39e2c83d732ebd5f06cd2dbae839f819ecfe7ea#diff-336e4dab606c9690011ede09821a2772b1d6e53274d45e406a77da705db521b2)             | 🟠 no    |                                                                                                                                                                                          | 🟢 Yes  |                                                                                                                                |
-
-
