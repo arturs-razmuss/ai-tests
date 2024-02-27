@@ -1,5 +1,7 @@
 package com.arpc.aitests;
 
+import org.javamoney.moneta.convert.ExchangeRateBuilder;
+import org.javamoney.moneta.spi.DefaultNumberValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,14 +11,16 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.MonetaryConversions;
+import javax.money.convert.RateType;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-class ExchangeServiceTestCopilot {
+class ExchangeServiceCopilotTest {
 
     @Mock
     private ExchangeRateProvider provider;
@@ -50,23 +54,23 @@ class ExchangeServiceTestCopilot {
 
     @Test
     void shouldReturnEmptyOptionalWhenSourceCurrencyIsInvalid() {
-        CurrencyUnit invalidCurrency = Monetary.getCurrency("INVALID");
-
-        Optional<ExchangeRate> result = exchangeService.getExchangeRate(invalidCurrency, validTargetCurrency);
+        Optional<ExchangeRate> result = exchangeService.getExchangeRate("INVALID", "USD");
 
         assertThat(result).isEmpty();
     }
 
     @Test
     void shouldReturnEmptyOptionalWhenTargetCurrencyIsInvalid() {
-        CurrencyUnit invalidCurrency = Monetary.getCurrency("INVALID");
-
-        Optional<ExchangeRate> result = exchangeService.getExchangeRate(validSourceCurrency, invalidCurrency);
+        Optional<ExchangeRate> result = exchangeService.getExchangeRate("EUR", "INVALID");
 
         assertThat(result).isEmpty();
     }
 
     private ExchangeRate createMockExchangeRate() {
-        return ExchangeRate.of(validSourceCurrency, validTargetCurrency, 1.0);
+        return new ExchangeRateBuilder("mock", RateType.REALTIME)
+                .setBase(validSourceCurrency)
+                .setFactor(new DefaultNumberValue(new BigDecimal(1.0)))
+                .setTerm(validTargetCurrency)
+                .build();
     }
 }
