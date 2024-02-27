@@ -23,8 +23,8 @@ If done right:
 
 However, writing tests can be time-consuming and error-prone.
 
-In many cases I write tests in advance of the code under test, nevertheless, there are scenarios where
-I wish there were a faster and better way.
+In many cases, I write tests in advance of the code under test, nevertheless, there are scenarios where
+I wish for a faster and more efficient approach.
 
 AI test generation tools aim to automate this process by generating tests based on the code and the expected behavior.
 
@@ -33,20 +33,20 @@ Does it mean you just gained 30-40% of your development time back? Let's find ou
 ## Deep dive
 ### CodiumAI
 CodiumAI has a free version for VS Code and JetBrains products.
-Not only does it generate tests, but provides code explanation, code improvement suggestions, and a chat feature. [[ref]](https://www.codium.ai/products/ide-plugin/)
+It not only generates tests but also provides code explanation, code improvement suggestions, and a chat feature. [[ref]](https://www.codium.ai/products/ide-plugin/)
 
-Here is how its main panel looks in action using a predefined prompt:
+Here's how its main panel looks in action using a predefined prompt:
 ![CodiumAI settings with predefined "Plain" custom prompts](screenshots/CodiumAI/defaultSettings.png)
 
-The main strength of CodiumAI is its approach to first generate Behaviours Coverage (test plan) in natural language and then convert them to tests.
-I like this approach since it hints to the developer about the value of test design and allows for early intervention without the burden of implementation details.
+CodiumAI's main strength of CodiumAI is its approach of first generating Behaviours Coverage (test plan) in natural language and then converting them to tests.
+I like this approach because it hints to the developer about the value of test design and allows for early intervention without the burden of implementation details.
 ![CodiumAI settings with predefined "Plain" custom prompts](screenshots/CodiumAI/behaviours.png)
 
-In addition, each generated test is previewed and can be further tweaked by additional prompts.
+Additionally, each generated test is previewed and can be further tweaked by additional prompts.
 ![CodiumAI settings with predefined "Plain" custom prompts](screenshots/CodiumAI/testPreview.png)
 
-To evaluate CodiumAI I used multiple strategies:
-#### 1. Let CodiumAI generate tests without no custom instructions
+I evaluated CodiumAI using multiple strategies:
+#### 1. Let CodiumAI generate tests without any custom instructions
 [ExchangeServiceCodiumPlainTest](src/test/java/com/arpc/aitests/ExchangeServiceCodiumPlainTest.java)
 
 After clicking the "Save to file" button for the 8 tests in the preview, CodiumAI generated a file without a package name and static imports missing.
@@ -58,7 +58,7 @@ Each test had a comment with the behavior description, it must assist the tool w
 #### 2. Let CodiumAI generate tests with the custom prompt I used for GitHub Copilot
 [ExchangeServiceCodiumPromtTest](src/test/java/com/arpc/aitests/ExchangeServiceCodiumPromtTest.java)
 
-The initial result was decent, but the repeating setup code in each test was a bit verbose and meant it was not easy enough to add new test cases, since you would need to repeat all the setup code.
+The initial result was decent, but the repeating setup code in each test was slightly verbose, making it difficult to add new test cases easily. Since you would need to repeat all the setup code.
 
 In addition, the test output didn't match my go-to style for unit tests, so I decided to try a custom prompt in "General Instructions" to see if I could get better results.
 The prompt is available in the Github Copilot [section](#Github Copilot).
@@ -87,13 +87,14 @@ After installing the plugin you can quickly generate tests with just one click.
 
 A few moments later
 ![CodiumAI chat](screenshots/diffblue/generationOutput.png)
-A new file [ExchangeServiceDiffblueTest](src/test/java/com/arpc/aitests/ExchangeServiceDiffblueTest.java) was generated and what surprised me the most it compiled and passed all the tests it had written. Regarding the test quality please see for yourself, I think plenty is to be desired.
+A new file [ExchangeServiceDiffblueTest](src/test/java/com/arpc/aitests/ExchangeServiceDiffblueTest.java) was generated. 
+To my surprise, it compiled and passed all the tests it had written. However, regarding the test quality, I believe there's room for improvement. Please see the code for yourself!
 
 ### Github Copilot
 Most of the developers I know are using some Generative AI chat in their work. So I decided to add GitHub Copilot to the mix.
 
 Aside. I have seen some companies trying to boost their value offering by including a library of prompts.
-Here is one prompt, completely for free... you are welcome
+Here is one prompt, completely for free... you are welcome 🤭
 
 This is the prompt I used for Copilot to generate tests. Since it can add context automatically I didn't have to add ExchangeService.java code explicitly.
 ```
@@ -109,8 +110,10 @@ Write jUnit test where:
 8) Use helpers and test doubles from existing context if appropriate
 ```
 
-The generated code used fields and setUp method to make tests succinct and easy to read. There were similar compilation issues similar to incorrect usage of
-`javax.money` API. I would have liked more test scenarios to be generated, like providing the same currency for both source and target, but overall solid attempt.
+The generated code used fields and setUp method to make tests succinct and easy to read.
+There were similar compilation issues related to incorrect usage of the `javax.money` API.
+While I would have preferred additional test scenarios, like providing the same currency for both source and target, 
+the overall attempt was solid.
 
 ## Conclusion
 
@@ -123,7 +126,7 @@ The generated code used fields and setUp method to make tests succinct and easy 
 ## TLDR
 Best results were achieved when writing a few tests by hand and then asking CodiumAI [to add additional tests](https://github.com/arturs-razmuss/ai-tests/blob/master/src/test/java/com/arpc/aitests/ExchangeServiceTest.java#L63-L122)
 
-You can probably achieve similar results with multiples of engineered prompts in Copilot, but it's not as convenient as with CodiumAI.
+You can likely achieve similar results with multiple, well-crafted prompts in Copilot, but it wouldn't be as convenient as using CodiumAI.
 
 Legend:
 🟢 Yes - succeeded
